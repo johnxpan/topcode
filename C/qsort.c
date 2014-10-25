@@ -1,3 +1,13 @@
+/********************************************************************************
+ * quick sort 
+ * 1. select the mid element to be the pivot, swap it with leftest element
+ * 2. set low to be left+1, high = right, 
+ * 3. start from left, find first element  > pivot value, start from end,  find first element backward < pivot value
+ * 4. swap two value and continue till left> right
+ * 5. recursively call the qsort base on split array
+ * ******************************************************************************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
