@@ -442,6 +442,25 @@ void removeDuplicate(Node * head){
 
     }
 }
+
+/* Function to reverse the linked list */
+static void reverse(struct node** head_ref)
+{
+    struct node* prev   = NULL; // save the prev for single link next
+    struct node* next;   // save next before cut off the curr->next link
+    struct node* current = *head_ref;
+
+    while (current != NULL)
+    {
+        next  = current->next; //save the next of current node; 
+        current->next = prev;   //change current next to prev
+        prev = current;   // now prev = current
+        current = next;   // current points to next now
+    }
+    *head_ref = prev;
+}
+ 
+
 int main(void){
     Node *myList = NULL;
     Node *dupList = NULL;
