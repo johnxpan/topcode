@@ -443,12 +443,13 @@ void removeDuplicate(Node * head){
     }
 }
 
+/*https://www.youtube.com/watch?v=KYH83T4q6Vs*/
 /* Function to reverse the linked list */
-static void reverse(struct node** head_ref)
+static void reverse(Node** head_ref)
 {
-    struct node* prev   = NULL; // save the prev for single link next
-    struct node* next;   // save next before cut off the curr->next link
-    struct node* current = *head_ref;
+    Node * prev   = NULL; // save the prev for single link next
+    Node * next;   // save next before cut off the curr->next link
+    Node * current = *head_ref;
 
     while (current != NULL)
     {
@@ -459,7 +460,23 @@ static void reverse(struct node** head_ref)
     }
     *head_ref = prev;
 }
- 
+
+// recursive version
+// assume head is global
+// Node *head;
+Node * rreverse(Node *p ) {
+    if(p->next==NULL) {
+        head=p;  // base condition
+        return;
+    }
+    rreverse(p->next); 
+    // it will execute only after reach the end of list
+    assume p before q
+    Node * q= p->next;
+    q->next=p;
+    p->next =NULL;
+}
+
 
 int main(void){
     Node *myList = NULL;
