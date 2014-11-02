@@ -5,7 +5,7 @@ void shellSort(int v[], int n) { //n is the len of the string
     int gap, i, j, temp;
     for(gap=n/2; gap> 0; gap /= 2) { //start with n/2, then n/4, n/8… till 1;
       for(i=gap; i<n;  i++) { // step along elements
-    for(j=i-gap; j>=0; j-=gap) {
+         for(j=i-gap; j>=0; j-=gap) {
            if(v[j]<=v[j+gap]) {
          // break;
            } else {
