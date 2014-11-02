@@ -442,6 +442,42 @@ void removeDuplicate(Node * head){
 
     }
 }
+
+/*https://www.youtube.com/watch?v=KYH83T4q6Vs*/
+/* Function to reverse the linked list */
+static void reverse(Node** head_ref)
+{
+    Node * prev   = NULL; // save the prev for single link next
+    Node * next;   // save next before cut off the curr->next link
+    Node * current = *head_ref;
+
+    while (current != NULL)
+    {
+        next  = current->next; //save the next of current node; 
+        current->next = prev;   //change current next to prev
+        prev = current;   // now prev = current
+        current = next;   // current points to next now
+    }
+    *head_ref = prev;
+}
+
+// recursive version
+// assume head is global
+// Node *head;
+Node * rreverse(Node *p ) {
+    if(p->next==NULL) {
+        head=p;  // base condition
+        return;
+    }
+    rreverse(p->next); 
+    // it will execute only after reach the end of list
+    assume p before q
+    Node * q= p->next;
+    q->next=p;
+    p->next =NULL;
+}
+
+
 int main(void){
     Node *myList = NULL;
     Node *dupList = NULL;
