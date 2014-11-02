@@ -1,4 +1,5 @@
 /* C Program to Implement a Heap & provide Insertion & Deletion Operation */
+/* c code is easy */
 #include <stdio.h>
 #include <stdlib.h>
 
