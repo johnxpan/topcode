@@ -1,11 +1,19 @@
 /* single linked list practice */
+/* Source: Stanford CS library , code interview book */
+/* They are short to write, and people like it during  interview  */
+/* Noboday care you can build linked list, but they care if you   */
+/* can do complex algorithm and pointer manipulation  */
+/* linked list is a good practice for complex algorithm & pointer */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #define TRUE 1
 #define FALSE 0
 
+/* put data after next pointer, so future data change */
+/* won't affect the pointer */
 struct node {
     struct node *next;
     int data;
@@ -13,9 +21,15 @@ struct node {
 
 typedef struct node Node;
 
+/*******************************************************/
+/* basic linked list utility, create new node, add it  */
+/* from front & end, print list, build a list, check   */
+/* list length                                         */
+/*******************************************************/
 Node * newNode(int data) {
     Node *newNode = malloc(sizeof(Node));
-    newNode->data = data;
+    if(newNode!=NULL)
+       newNode->data = data;
     return newNode;
 }
 
@@ -34,8 +48,7 @@ Node *buildOneTwo(void){
 
     head   = newNode(1);
     second = newNode(2);
-
-    head->next = second;
+head->next = second;
     second->next = NULL;
 
     return head;
@@ -45,7 +58,6 @@ Node * buildOneTwoThree (void){
     Node *head = NULL;
     Node *second = NULL;
     Node *third = NULL;
-    //Node *fourth = NULL;
 
     head = newNode(1);
     second = newNode(2);
@@ -53,31 +65,10 @@ Node * buildOneTwoThree (void){
     //fourth = newNode(4);
 
     head->next = second;
-    //second->next =NULL;
     second->next = third;
     third->next = NULL; // system may not set the third->next to NULL automatically
-    //fourth->next =NULL;
     return head;
 }
-
-Node * build4(void){
-    Node *head = NULL;
-    Node *second = NULL;
-    Node *third = NULL;
-    Node *fourth = NULL;
-
-    head = newNode(1);
-    second = newNode(2);
-    third = newNode(3);
-    fourth = newNode(4);
-
-    head->next = second;
-    second->next = third;
-    third->next = fourth; // system may not set the third->next to NULL automatically
-    fourth->next =NULL;
-    return head;
-}
-
 
 int linkLength( Node *head){
     Node *node = head;
@@ -98,27 +89,36 @@ void printList(Node *head){
 }
 
 // add new node to the head of LinkedList
-void push(Node ** head, int data){
+// no special case for empty list 
+// it also works on any node in the middle of list
+void push(Node ** headref, int data){
     Node * n = newNode(data);
-    n->next = (*head); // not head->next, head is NOT a node, no next
-    *head = n;
+    if(n != NULL) {
+       n->next = (*headref); // not head->next, head is NOT a node, no next
+       *headref = n;
+    }
 }
-
 //add node to the end of a list
+//special case for empty list
 void append(Node **head, int data){
     Node *curr= *head;
     Node *n = newNode(data);
 
-    if(curr==NULL){
+    if(curr==NULL){ // empty list
         *head= n;
-        return;
+        n->next= NULL;
+    } else {
+       while(curr->next!= NULL){
+          curr= curr->next;
+       }
+       curr->next = n;
+       n->next = NULL;
     }
-    while(curr->next!= NULL){
-        curr= curr->next;
-    }
-    curr->next = n;
-    n->next = NULL;
 }
+
+/* done with basic utility */
+
+/*************************************************************/
 Node *copyList(Node *srcHead){
     Node *n=NULL;
     Node *nList = NULL;
@@ -141,7 +141,6 @@ Node *copyList(Node *srcHead){
     return nList;
 
 }
-
 // change head using reference Pointer
 void changeToNull(Node **headref){
     *headref = NULL;
@@ -209,17 +208,17 @@ int getNth(Node *head, int n){
     int index = 0;
     while (curr != NULL){
         if(index == n){
-            break;
+            return (curr->data);
         }
         curr=curr->next;
         index++;
     }
-    return curr->data;
+    assert(0); // non-exist element
 }
 
-//Delete a List
-void deleteList(Node **head){
-    Node *curr=*head;
+//Delete a List, need to record curr->next before free(curr)
+void deleteList(Node **headref){
+    Node *curr=*headref;
     Node *next=NULL;
 
     while(curr!= NULL){
@@ -227,68 +226,42 @@ void deleteList(Node **head){
         free(curr);
         curr=next;
     }
-    free(*head);
+    *headref= NULL;
 
 }
-int pop(Node **head){
-    Node *curr=NULL;
-    int data=0;
 
-    if(*head==NULL)
+//extract data from head node, delete node.
+int pop(Node **headref){
+    Node *curr =NULL;
+    int result =0;
+
+    if(*headref==NULL)
         return FALSE;
-    curr= (*head)->next;
-    data = (*head)->data;
-    free(*head);
-    *head= curr;
 
-    return data;
+curr= *headref;
+    *headref = curr->next;
+    result = curr->data;
+    free(curr);
+
+    return result;
 
 }
-
-void popTest (){
-    Node *head = buildOneTwoThree();
-    int a = pop(&head);
-    int b= pop(&head);
-    int c= pop(&head);
-
-    printf("\na= %d, b= %d, c=%d",a , b ,c);
-    printf("\nList len = %d", linkLength(head));
+// use push() which works both at the head and middle
+void insertNth(Node **headref, int index, int data) {
+   if(index==0)
+       push(headref, data);
+   else {
+       Node *curr = *headref;
+       int i;
+       for(i=0; i<index-1; i++) {
+          assert(curr!= NULL);
+          curr= curr->next;
+       }
+       assert(curr!=NULL);
+       push(&(curr->next), data);
+   }
 }
 
-void insertNth(Node **head, int n, int data)
-{
-    Node *curr=NULL;
-    Node *currNext=NULL;
-    int i = 1;
-    Node *new = newNode (data);
-
-    if(*head == NULL){// empty list
-        *head = new;
-        (*head)->next = NULL;
-        return;
-    }
-
-    if(n==0) { // insert at head
-        new->next = *head;
-        *head= new;
-        return;
-    }
-
-
-    curr = *head;
-    currNext = curr->next;
-    while (curr != NULL) {
-        if(i==n) {
-            new->next = currNext;
-            curr->next= new;
-            break;
-        }
-        curr= currNext;
-        currNext = curr->next;
-        i++;
-
-    }
-}
 
 void insertNthTest(void) {
 
@@ -301,34 +274,25 @@ void insertNthTest(void) {
 
 }
 
+//insert element in a sorted list
 void sortedInsert(Node **headRef, Node *newNode){
-    Node *curr = NULL;
-    Node *currNext = NULL;
+    Node *curr = *headRef;
 
-    if(*headRef == NULL){ // empty list
+    if(curr== NULL || newNode->data< curr->data){ // empty list, or new node is smallest
         *headRef = newNode;
         newNode->next = NULL;
         return;
     }
 
-    if((*headRef)->data > newNode->data) { // insert at the head
-        newNode->next = *headRef;
-        *headRef = newNode;
-        return;
+    while (curr->next != NULL && (newNode->data > curr->next->data)){
+        curr=curr->next;
     }
 
-    curr= *headRef;
-    currNext= curr->next;
-
-    while (currNext != NULL && (newNode->data > currNext->data)){
-        curr=curr->next;
-        currNext= curr->next;
-  //same situation if currNext == NULL
-    newNode->next = currNext;
+newNode->next = curr->next;
     curr->next = newNode;
-
 }
 
+//sort a linkedlist, by insert one by one
 void insertSort(Node **headRef){
     Node *newList=NULL;
 
@@ -343,145 +307,198 @@ void insertSort(Node **headRef){
     *headRef = newList;
 }
 
-void appendList(Node **aRef, Node **bRef){
-    Node *curr = *aRef;
-//  Node *currNext = NULL;
-    // we shall not care bRef is empty or not
-    if(*bRef == NULL) {
-        return; // do nothing
-    }
+//append list b to the end of list a. we need to pass reference 
+//of both a & b because a maybe empty, b needs to be nullify
+void appendList(Node **aref, Node **bref) {
+  Node *curr=*aref;
 
-    if(*aRef == NULL) { // list a is empty
-        *aRef = *bRef;
-        return;
-    }
+  if(*aref==NULL) {
+     *aref=*bref;
+     return;
+  }
 
-    while(curr->next!= NULL){
-        curr =curr->next;
-    }
-    //To the end of a list
-    curr->next = *bRef;
-    *bRef=NULL; // clear list B
+  while (curr->next!= NULL) {
+     curr=curr->next;
+  }
+
+  curr->next=*bref;
+  *bref=NULL; // null the original b, since it is appended to a now
 
 }
 
-//Split list in two, first list shall have the extra
-Node *frontBackSplit (Node *a)
-{
-    Node *curr = a;
-    Node *b = NULL; // the second half list
-    int len = 0;
-    int i=0;
+//Split a list in two, first list shall have the extra Node
+void frontBackSplit(Node *source, Node **aref, Node **bref) {
+     Node *curr = NULL;
+     int i = 0;
 
-    if(a == NULL) {
-        return NULL; // no split
-    }
-
-    while(curr != NULL) {
-        len++;
+     int len = linkLength(source);
+     if(len<=1) {
+         *aref = source;
+         *bref =NULL;
+         return;
+     }
+    *aref=source;
+     curr=source;
+     // figure (len-1)/2 by a few drawing
+     while(i< (len-1)/2) {
         curr=curr->next;
-    }
-
-    if(len==1) {
-        return NULL; // b is empty
-    }
-    curr = a;
-    if(len%2 == 1){
-        for(i=0; i<len/2; i++){
-            curr=curr->next;
-        }
-    } else {
-        for(i=0; i<len/2-1; i++){
-            curr=curr->next;
-        }
-    }
-    b = curr->next;
-    curr->next = NULL;
-
-    return b;
+        i++;
+     }
+     *bref=curr->next;
+     curr->next= NULL;
 }
-void testFrontBackSplit(void){
-    Node* a = build4();
+//remove duplicate from a sorted list
+void removeDuplicates(Node *headref) {
 
-    Node* b = NULL;
+  Node *curr =headref;
+  Node *currNext = NULL;
+  if(curr==NULL)  // empty list
+    return;
+  currNext = curr->next;
 
-    printf("\noriginal list = ");
-    printList(a);
-
-    b = frontBackSplit(a);
-    printf("\nnew List a = ");
-    printList(a);
-    //b = frontBackSplit(a);
-    printf("\nList b = ");
-    printList(b);
+  while (currNext != NULL) {
+     if(curr->data == currNext->data) {
+        curr->next = currNext->next;
+        free(currNext);
+        currNext=curr->next;
+     } else {
+        curr=currNext;
+        currNext=curr->next;
+     }
+  }
 }
 
-void testAppendList(void){
-    Node *a = buildOneTwoThree();
-    Node *b = buildOneTwoThree();
+//move the first element of list B to the front of list A 
+//This routine is extremely help when you split list
+// if a={1,2} b={3,4.5} then a={3,1,2} b={4,5}
+void moveNode (Node **aref, Node **bref) {
+    Node *ahead = *aref;
+    Node *bhead = *bref;
+    //make sure list b has an element
+    assert(bhead !=NULL);
 
-    appendList(&a, &b);
-    printf("\n List A = ");
-    printList(a);
+    *bref = bhead->next;
+    *aref = bhead;
+    bhead->next = ahead;
 }
 
-void removeDuplicate(Node * head){
-    Node *curr =head;
-    Node *currNext = NULL;
+Node *shuffleMerge(Node *a, Node *b) {
+  Node *result= NULL;
+  Node **lastPtrRef= &result;
 
-    while (curr!=NULL){
-        if(curr->next ==NULL) {
-            return; // done
-        }
-        if(curr->data == curr->next->data){
-            currNext = curr->next;
-            curr->next = curr->next->next;
-            free(curr->next);
-        }
-        curr = curr->next;
+  while (a!=NULL && b != NULL) {
+     moveNode(lastPtrRef, &a);
+     lastPtrRef = &((*lastPtrRef)->next);
+     moveNode(lastPtrRef, &b);
+     lastPtrRef = &((*lastPtrRef)->next);
+  }
+  if(a==NULL) { // append the rest of b
+     *lastPtrRef =b;
+  }
+  if(b==NULL) {
+     *lastPtrRef=a;
+  }
 
+  return result;
+}
+
+//recursive shuffle merge
+Node *rsMerge(Node *a, Node *b) {
+   Node *result;
+   Node *recur;
+
+   if(a ==NULL)
+     return(b);
+   else if(b==NULL)
+     return (a);
+   else {  // do recursive call first, so we do not need temp store for a/b->next 
+     recur=rsMerge(a->next, b->next);
+     result=a;
+     a->next = b;
+     b->next = recur;
+     return(result);
+   }
+}
+
+// take 2 sorted list, and merge 2 into one list, sorted
+Node *sortedMerge(Node *a, Node *b) {
+  Node *result = NULL;
+  Node **lastPtrRef = &result;
+
+  while( a!=NULL && b!=NULL) {
+     if(a->data<=b->data) {
+         moveNode(lastPtrRef, &a);
+     } else {
+         moveNode(lastPtrRef, &b);
+     }
+
+   lastPtrRef = &((*lastPtrRef)->next);
+  }
+  if(a==NULL) {
+     *lastPtrRef=b;
+  }
+  if(b==NULL) {
+     *lastPtrRef=a;
+  }
+  return result;
+}
+
+//merge sort for linked list
+void mergeSort(Node **headRef) {
+  Node *head = *headRef;
+  Node *a;
+  Node *b;
+
+  if((head ==NULL)||(head->next==NULL)) {
+     return;
+  }
+  frontBackSplit (head, &a, &b); // split head into a, b sublists
+  mergeSort(&a);
+  mergeSort(&b);
+
+  *headRef = sortedMerge(a,b); // merge to sorted list
+}
+// reverse a linked list, one pass
+// you need 3 pointers, result(init to null), curr, and currnext
+void reverseList(Node **headRef) {
+    Node *result =NULL;
+    Node *curr = *headRef;
+    Node *currNext =NULL;
+
+    while(curr!=NULL) {
+       currNext=curr->next;
+       curr->next= result;
+       result = curr;
+       curr=currNext;
     }
+    *headRef = result;
 }
 
-/*https://www.youtube.com/watch?v=KYH83T4q6Vs*/
-/* Function to reverse the linked list */
-static void reverse(Node** head_ref)
-{
-    Node * prev   = NULL; // save the prev for single link next
-    Node * next;   // save next before cut off the curr->next link
-    Node * current = *head_ref;
+//recursive reverse list
+void recursiveReverse(Node **headRef) {
+   Node *first;
+   Node *rest; // rest of list
 
-    while (current != NULL)
-    {
-        next  = current->next; //save the next of current node; 
-        current->next = prev;   //change current next to prev
-        prev = current;   // now prev = current
-        current = next;   // current points to next now
-    }
-    *head_ref = prev;
+   if(*headRef == NULL)
+      return;  // empty list base case
+   first = *headRef; // assume first = {1,2,3}
+
+rest = first->next; // rest = {2,3} 
+
+   if(rest ==NULL)
+      return;  // empty rest base case
+
+   recursiveReverse(&rest);
+
+   first->next->next =first;
+   first->next =NULL;
+   *headRef = rest; // fix head pointer
 }
-
-// recursive version
-// assume head is global
-// Node *head;
-Node * rreverse(Node *p ) {
-    if(p->next==NULL) {
-        head=p;  // base condition
-        return;
-    }
-    rreverse(p->next); 
-    // it will execute only after reach the end of list
-    assume p before q
-    Node * q= p->next;
-    q->next=p;
-    p->next =NULL;
-}
-
 
 int main(void){
     Node *myList = NULL;
     Node *dupList = NULL;
-    Node *nn= newNode(4);
+    //Node *nn= newNode(4);
     Node *randomList =NULL;
     append(&myList, 10);
     //append(&myList, 15);
@@ -514,18 +531,16 @@ int main(void){
 
     dupList=buildWithDummyNode();
     printList(dupList);
-
-    printf("\n List has %d 5.", countTest(dupList,5));
+ printf("\n List has %d 5.", countTest(dupList,5));
     printf("\n 3rd Element of list = %d", getNth(dupList, 3));
     //deleteList(&dupList);
 
-    popTest();
     insertNthTest();
 
-    sortedInsert(&dupList, nn);
+    //sortedInsert(&dupList, nn);
     printList(dupList);
 
-  // random list
+    // random list
     insertNth(&randomList, 0, 13);
     insertNth(&randomList, 1, 13);
     insertNth(&randomList, 2, 27);
@@ -533,7 +548,7 @@ int main(void){
     insertNth(&randomList, 4, 55);
 
     printList(randomList);
-    removeDuplicate(randomList);
+    removeDuplicates(randomList);
     printList(randomList);
 
     //insertSort(&randomList);
@@ -544,6 +559,42 @@ int main(void){
     //testFrontBackSplit();
     return 0;
 }
+
+#if 0
+/*https://www.youtube.com/watch?v=KYH83T4q6Vs*/
+/* Function to reverse the linked list */
+static void reverse(Node** head_ref)
+{
+    Node * prev   = NULL; // save the prev for single link next
+    Node * next;   // save next before cut off the curr->next link
+    Node * current = *head_ref;
+
+    while (current != NULL)
+    {
+        next  = current->next; //save the next of current node; 
+        current->next = prev;   //change current next to prev
+        prev = current;   // now prev = current
+        current = next;   // current points to next now
+    }
+    *head_ref = prev;
+}
+// recursive version
+// assume head is global
+// Node *head;
+Node * rreverse(Node *p ) {
+    if(p->next==NULL) {
+        head=p;  // base condition
+        return;
+    }
+    rreverse(p->next); 
+    // it will execute only after reach the end of list
+    assume p before q
+    Node * q= p->next;
+    q->next=p;
+    p->next =NULL;
+}
+#endif
+
 
 
 
