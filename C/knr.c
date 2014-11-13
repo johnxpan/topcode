@@ -371,6 +371,25 @@ void reverser (char s[], int i, int len) {
 // define a macro to swap two argument of type t
 #define swap(t, x, y) { t temp; temp=x; x=y; y=temp; }
 
+/* Returns true if the machine is little-endian, false if the machine is big-endian */
+bool endianness(){
+    int   testNum;
+    char *ptr;
+    testNum = 1;
+    ptr = (char *) &testNum;
+    return (*ptr); /* Returns the byte at the lowest address */
+}
+ 
+//You can also use the Union to decide the big/little endian Returns true if the machine is little-endian, false if the machine is big-endian*/
+bool endianness(){
+    union {
+        int theInteger;
+        char singleByte;
+    } endianTest;
+ 
+    endianTest.theInteger = 1;
+    return endianTest.singleByte;
+}
 
 
 
