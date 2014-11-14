@@ -17,22 +17,31 @@ void swap(int v[], int i, int j) {
      v[j] = temp;
 }
 
-void mqsort (int v[ ], int left, int right) {
-  int i, pindex;
-  void swap(int v[], int i, int j) ;
+void qsort(int v[], int left, int right) {
+     int pivot;
+     int lo, hi;
 
-  if(left>=right)
-      return;  // array contains less than 2 elements
-  swap(v, left, (left+right)/2); // swap the pivot (mid element) with first element
-  pindex= left;   // move partition element to v[0]
-  for(i = left+1; i<=right; i++) {
-        if(v[i] < v[left]) ;
-           swap(v, ++pindex, i);
-  }
-  swap(v, left, pindex);  // restore partition element 
-  mqsort (v, left, pindex-1);
-  mqsort (v, pindex+1, right);
-}
+     if(left>= right)  // if array contain fewer than two elements, do nothing 
+          return;
+     swap(v, left, (left+right)/2); // select the mid item as pivot
+     pivot = left;
+     lo = left+1, hi=right;
+     while(lo<=hi) {
+          while(v[hi] > v[pivot])
+             hi--;
+          while (v[lo]<=v[pivot]) 
+             lo++;
+          if(lo <= hi) {
+             swap(v, lo, hi);
+             lo++, hi--;
+          }     
+     } 
+     swap(v, left, hi);
+
+     qsort(v, left, hi -1);
+     qsort(v, hi +1, right);
+}   
+
 
 void printArray(int a[], int n)
 {
@@ -44,7 +53,7 @@ void printArray(int a[], int n)
 
 int main(void) {
   int v[10] = {11, 4, 8, 13, 57, 6, 18, 19, 22, 1};
-  mqsort (v, 0, 9);
+  qsort (v, 0, 9);
   printArray(v, 9);
   return 0;
 }
