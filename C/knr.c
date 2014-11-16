@@ -14,6 +14,44 @@ int power(int base, int n) {
    return result;
 }
 
+//check if a number x is the power of N
+// if x%N == 0, keep extract N from x: x=x/N
+// if the residue ==1, it is true, otherwise false
+int isPowerOf3(int x) {  //2, 3, 4 is the same
+   if(x==0) // x ==0 will cause infinite loop
+      return 0; // false
+   if(x%3 == 0) {
+      x = x/3;
+   }
+   return x==1; 
+}
+// o(log3(N))
+int isPowerOf3v2(int x) {
+   if(x==0) 
+     return 0;
+   if(x%9 == 0) {
+      x=x/9;
+   }
+   return (x==1 || x==3);//6 won't work
+}
+// O(log9(N)
+//space for speed
+// assume 32bit machine, it will 3**19 ~ 2**32
+// for 32 bit machine, there are less than 32 of 3 power
+int ap3[19]= { 3, 9, 27, 81, 243, 729, 2187, 6561, 19683, 59049, 177147, 531441, 1594323, 4782969, 14348907, 43046721, 129140163, 387420489, 1162261467};
+int fastPower3(int n) {
+   int i;
+   for(i=0; i< 19; i++){
+      if(n==ap3[i]) {
+         return 1;
+      }
+   }
+   return 0;
+}
+
+
+
+
 // calculate string length
 int strlen(char s[]) {
    int i=0;
