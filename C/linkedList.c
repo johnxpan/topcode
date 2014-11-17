@@ -98,6 +98,11 @@ void push(Node ** headref, int data){
        *headref = n;
     }
 }
+Node *addFront(Node *head, int data) {
+   Node *n = newNode(data);
+   n->next = head;
+   return head;
+}
 //add node to the end of a list
 //special case for empty list
 void append(Node **head, int data){
@@ -115,7 +120,22 @@ void append(Node **head, int data){
        n->next = NULL;
     }
 }
+// Instead of pass **head, you can return the new 
+// head
+Node *append(Node *head, int data) {
+   Node *curr = head;
+   Node *n = newNode(data);
 
+   if(curr==NULL) 
+      return n;
+   while(curr->next!=NULL) {
+      curr=curr->next;
+   }
+   curr->next = n;
+   n->next = NULL;
+   return head;
+}
+ 
 /* done with basic utility */
 
 /*************************************************************/
@@ -595,6 +615,18 @@ Node * rreverse(Node *p ) {
 }
 #endif
 
+
+// We don't know the head of the list,  only a pointer to the node
+// delete the node
+// the key is copy the node->next content to current node and delete the node->next instead
+
+
+// detect the loop inside a linked list
+// the key is have a fast pointer move 2 node a time, while a slow pointer move one node a time. If there is a loop, they will meet
+
+
+
+ 
 
 
 
