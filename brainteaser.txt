@@ -25,3 +25,56 @@ Warm one bulb before entering room
 ================
 You are given 8 pennies, 7 of which weigh exactly the same, but one penny weighs less than the other 7. 
 You also have a judge scale. Find the one penny that weighs the least in less than 3 steps.
+
+First, you split the 8 pennies into 3 groups of pennies – 2 groups with 3 pennies each and 1 group with 2 pennies. 
+         Then, you compare the weight of the first two groups of 3 pennies each by putting them on the scale.
+Scenario #1: The 2 groups weigh the same. This means the lightest coin is in the group of 2. 
+  So, take those 2 pennies and compare them to each other and find the lightest coin.
+
+Scenario #2: The 1st group weighs more than the 2nd group. Take group #2 (3 pennies) and 
+pick any 2 pennies out of that group of 3. If they weight the same, then the third penny is lighter. 
+If they don’t weigh the same then the lighter one is obviously the lightest penny.
+
+=================
+There’s an activity in America, with one-on-one contests, and a national championship. 
+The same person won the championship on two different occasions about 65 years apart. 
+Name the activity.
+
+This was a question that Charlie Munger (a partner of Warren Buffet’s) asked a group of students in a speech he gave. 
+This is a fun question to try to answer, because it really is just a test to see your analytical skills. 
+Try to figure this out on your own – we’re sure that you can figure out the answer on your own if you think carefully.
+
+Breaking the problem down
+Let’s figure this out. Well, since the championship was won by the same person over a span of 65 years, that means the
+second time around this person must have won the championship when he was at least 85 years old, 
+and that’s assuming that he first won the championship when he was at least 20 years old.
+
+This also means that there’s no way that this activity requires any hand eye coordination – 
+because anyone over 85 years old will simply not be able to beat someone in his 20’s. 
+So, there’s no way this was a billiards tournament, and definitely not a tennis tournament.
+
+What about a chess tournament? Well, even though it is a mental game, it does require quite a bit of stamina
+– and is far too competitive for an 85 year old to be competitive at a national level, 
+even if he can beat a lot of other younger people. If not chess, then what about checkers? 
+Well, that sounds like a potential answer! Because, that is definitely a game where experience
+can make you the best even though you may be 85 years old. And it’s also a game which does 
+not require much stamina, or any athleticism at all. And that is the correct answer – it is a checker’s tournament.
+
+The name of this person, in case you were wondering is Asa A. Long (born on 20 Aug 1904). 
+He became the youngest US national champion, at 18 years old 64 days, when he won in Boston, Massachusetts, 
+USA on 23 Oct 1922. He then became the oldest person to win the national checkers tournament in America, 
+at age 79 years 334 days when he won his sixth title in Tupelo, Mississippi, USA on 21 Jul 1984.
+
+=====================
+Four people need to cross a rickety rope bridge to get back to their camp at night. Unfortunately, 
+they only have one flashlight and it only has enough light left for seventeen minutes. 
+The bridge is too dangerous to cross without a flashlight, 
+and it’s only strong enough to support two people at any given time.
+
+Each of the campers walks at a different speed. One can cross the bridge in 1 minute, another in 2 minutes,
+the third in 5 minutes, and the slowest camper takes 10 minutes to cross. 
+How can the campers make it across in exactly 17 minutes?
+The guy who return the the light must be faster (1m or 2m guy, use only 1m guy is not good, because it require 1m to back forward many times)
+5m/10m guy must go together to save time
+
+==============
