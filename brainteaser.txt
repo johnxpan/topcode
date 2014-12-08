@@ -1,0 +1,27 @@
+http://www.programmerinterview.com/index.php/puzzles/ 
+
+Let’s say that you have 25 horses, and you want to pick the fastest 3 horses out of those 25. 
+In each race, only 5 horses can run at the same time because there are only 5 tracks. 
+What is the minimum number of races required to find the 3 fastest horses without using a stopwatch?
+5*5=> 5*3 left, then let the 1st runner of 5 group to compete in the 6th round, eliminate 4th, 5th group, and 2nd/3rd in third group, 
+the leader of the 1st group, left 5 horses for the final, => total=7
+
+========
+You have a birthday cake and have exactly 3 cuts to cut it into 8 equal pieces. How do you do it?
+The answer: stack the pieces
+
+The “correct” answer is to cut the cake in quarters (4 pieces) using 2 of the cuts – 
+one horizontally down the center of the cake and the other vertically down the center of the cake.  
+Then stack them and cut it from center
+
+=======================
+Suppose that you are standing in a hallway next to 3 light switches, which are all off. 
+There is another room down the hallway, where there are 3 incandescent light bulbs – 
+each light bulb is operated by one of the switches in the hallway. Because the light 
+bulbs are in another room, you can not see them since you are standing in the hallway. 
+How would you figure out which switch operates which light bulb, if you can only go 
+the room with the light bulbs one time, and only one time?
+Warm one bulb before entering room
+================
+You are given 8 pennies, 7 of which weigh exactly the same, but one penny weighs less than the other 7. 
+You also have a judge scale. Find the one penny that weighs the least in less than 3 steps.
