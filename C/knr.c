@@ -408,13 +408,11 @@ void reverser (char s[], int i, int len) {
 
 // define a macro to swap two argument of type t
 #define swap(t, x, y) { t temp; temp=x; x=y; y=temp; }
-
+/* Intel is little endian, while PowerPC, arms, sparc are big endian, network is big endian too*/
 /* Returns true if the machine is little-endian, false if the machine is big-endian */
 bool endianness(){
-    int   testNum;
-    char *ptr;
-    testNum = 1;
-    ptr = (char *) &testNum;
+    int   testNum = 1;
+    char *ptr  = (char *) &testNum;
     return (*ptr); /* Returns the byte at the lowest address */
 }
  
@@ -428,6 +426,28 @@ bool endianness(){
     endianTest.theInteger = 1;
     return endianTest.singleByte;
 }
+
+void testEndian(void) {
+   unsigned long x = 0x11223344;
+   unsigned char *p = (char *)&x;
+   
+   for (int i =0; i< sizeof(unsigned long); i++) {
+       printf("%x", *p++);  // will print  443322110000000 on 64linux machine
+   }
+}
+
+#if 0
+//swap byte for endian
+x= ((x&0xFF)<<8) | ((x >> 8) & 0xFF)   #swap 2 byte endianness
+another way is to write byte char
+unsigned char short x;
+putchar(x>>8); //write high-order byte
+putchar(x&0xFF); //write low-order byte
+then read back
+unsigned char short x;
+x = getchar()<<8; //read high order byte
+x |= getchar() & 0xFF; // read low order byte
+#endif
 
 
 
